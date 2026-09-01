@@ -1,0 +1,9 @@
+server:
+  port: ${SERVER_PORT:8092}
+
+spring:
+  datasource:
+    url: ${HOTEL_DB_URL:jdbc:h2:mem:propertyview}
+    username: ${HOTEL_DB_USERNAME:sa}
+    password: ${HOTEL_DB_PASSWORD:sa}
+    driver-class-name: org.h2.Driver
