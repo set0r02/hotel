@@ -7,6 +7,8 @@ import com.hotelservice.entity.Address;
 import com.hotelservice.entity.ArrivalTime;
 import com.hotelservice.entity.Contacts;
 import com.hotelservice.entity.Hotel;
+import com.hotelservice.exception.AmenitiesNotEmptyException;
+import com.hotelservice.exception.HotelNotFoundException;
 import com.hotelservice.mapper.HotelMapper;
 import com.hotelservice.repository.HotelRepository;
 import com.hotelservice.service.HotelService;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,7 +35,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelOutputDto getById(Long id) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Hotel with id " + id + " not found")
+                        new HotelNotFoundException("Hotel with id " + id + " not found")
                 );
 
         return hotelMapper.toHotelOutputDto(hotel);
@@ -97,6 +102,35 @@ public class HotelServiceImpl implements HotelService {
 
         return hotelMapper.toHotelShortOutputDto(hotelRepository.save(hotel));
 
+    }
+
+    @Override
+    public HotelOutputDto addAmenities(Long id, Set<String> amenities) {
+
+        if(amenities == null) {
+            throw new AmenitiesNotEmptyException("Amenities must be not null");
+        }
+
+        Set<String> cleanedAmenities = amenities.stream()
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.toSet());
+
+        if (cleanedAmenities.isEmpty()) {
+            throw new AmenitiesNotEmptyException(
+                    "Amenities must contain at least one valid value"
+            );
+        }
+
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() ->
+                        new HotelNotFoundException("Hotel with id " + id + " not found")
+                );
+
+        hotel.getAmenities().addAll(cleanedAmenities);
+
+        return hotelMapper.toHotelOutputDto(hotelRepository.save(hotel));
     }
 
 

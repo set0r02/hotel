@@ -6,6 +6,7 @@ import com.hotelservice.dto.output.HotelShortOutputDto;
 import com.hotelservice.entity.Hotel;
 
 import java.util.List;
+import java.util.Set;
 
 public interface HotelService {
 
@@ -22,6 +23,8 @@ public interface HotelService {
     );
 
     public HotelShortOutputDto createHotel(HotelInputDto hotelInputDto);
+
+    public HotelOutputDto addAmenities(Long id, Set<String> amenities);
 
 
 }
