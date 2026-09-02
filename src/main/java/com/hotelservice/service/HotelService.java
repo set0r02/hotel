@@ -1,5 +1,6 @@
 package com.hotelservice.service;
 
+import com.hotelservice.dto.input.HotelInputDto;
 import com.hotelservice.dto.output.HotelOutputDto;
 import com.hotelservice.dto.output.HotelShortOutputDto;
 import com.hotelservice.entity.Hotel;
@@ -19,6 +20,8 @@ public interface HotelService {
             String country,
             List<String> amenities
     );
+
+    public HotelShortOutputDto createHotel(HotelInputDto hotelInputDto);
 
 
 }

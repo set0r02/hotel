@@ -1,7 +1,11 @@
 package com.hotelservice.service.Impl;
 
+import com.hotelservice.dto.input.HotelInputDto;
 import com.hotelservice.dto.output.HotelOutputDto;
 import com.hotelservice.dto.output.HotelShortOutputDto;
+import com.hotelservice.entity.Address;
+import com.hotelservice.entity.ArrivalTime;
+import com.hotelservice.entity.Contacts;
 import com.hotelservice.entity.Hotel;
 import com.hotelservice.mapper.HotelMapper;
 import com.hotelservice.repository.HotelRepository;
@@ -59,6 +63,40 @@ public class HotelServiceImpl implements HotelService {
                 .stream()
                 .map(hotelMapper::toHotelShortOutputDto)
                 .toList();
+    }
+
+    @Override
+    public HotelShortOutputDto createHotel(HotelInputDto hotelInputDto) {
+
+        Address address = Address.builder()
+                .houseNumber(hotelInputDto.address().houseNumber())
+                .street(hotelInputDto.address().street())
+                .city(hotelInputDto.address().city())
+                .country(hotelInputDto.address().country())
+                .postalCode(hotelInputDto.address().postCode())
+                .build();
+
+        Contacts contact = Contacts.builder()
+                .phone(hotelInputDto.contacts().phone())
+                .email(hotelInputDto.contacts().email())
+                .build();
+
+        ArrivalTime arrivalTime = ArrivalTime.builder()
+                .checkIn(hotelInputDto.arrivalTime().checkIn())
+                .checkOut(hotelInputDto.arrivalTime().checkOut())
+                .build();
+
+        Hotel hotel = Hotel.builder()
+                .name(hotelInputDto.name())
+                .description(hotelInputDto.description())
+                .brand(hotelInputDto.brand())
+                .address(address)
+                .contacts(contact)
+                .arrivalTime(arrivalTime)
+                .build();
+
+        return hotelMapper.toHotelShortOutputDto(hotelRepository.save(hotel));
+
     }
 
 

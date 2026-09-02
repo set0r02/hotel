@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record AddressDto(
 
         @NotNull
-        Integer houseNumber,
+        Long houseNumber,
 
         @NotBlank
         String street,
