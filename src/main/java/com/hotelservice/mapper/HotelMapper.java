@@ -1,6 +1,5 @@
 package com.hotelservice.mapper;
 
-import com.hotelservice.dto.input.HotelInputDto;
 import com.hotelservice.dto.output.HotelOutputDto;
 import com.hotelservice.dto.output.HotelShortOutputDto;
 import com.hotelservice.entity.Address;

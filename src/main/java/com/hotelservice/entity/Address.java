@@ -2,7 +2,6 @@ package com.hotelservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
 import lombok.*;
 
 @Embeddable

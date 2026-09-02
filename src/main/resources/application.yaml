@@ -22,5 +22,5 @@ spring:
       path: /h2-console
 
   liquibase:
-    change-log-path: classpath:changelog/db.changelog-master.yaml
+    change-log: classpath:changelog/db.changelog-master.yaml
     enabled: true

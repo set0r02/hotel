@@ -100,7 +100,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void getById_shouldReturnHotel() {
+    void getById() {
         when(hotelRepository.findById(1L))
                 .thenReturn(Optional.of(hotel));
 
@@ -116,7 +116,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void getAll_shouldReturnHotels() {
+    void getAll() {
         when(hotelRepository.findAll())
                 .thenReturn(List.of(hotel));
 
@@ -132,7 +132,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void searchHotels_shouldReturnHotels() {
+    void searchHotels() {
         when(hotelRepository.findAll(any(Specification.class)))
                 .thenReturn(List.of(hotel));
 
@@ -154,7 +154,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void createHotel_shouldSaveHotel() {
+    void createHotel() {
         HotelInputDto inputDto = new HotelInputDto(
                 "DoubleTree by Hilton Minsk",
                 "Hotel description",
@@ -192,7 +192,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void addAmenities_shouldAddAmenities() {
+    void addAmenities() {
         when(hotelRepository.findById(1L))
                 .thenReturn(Optional.of(hotel));
 
@@ -215,7 +215,7 @@ class HotelServiceTest {
     }
 
     @Test
-    void getHistogram_shouldReturnHistogram() {
+    void getHistogram() {
         when(hotelRepository.countHotelsByCity())
                 .thenReturn(List.of(
                         new Object[]{"Minsk", 2L},
