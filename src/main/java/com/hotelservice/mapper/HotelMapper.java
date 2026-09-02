@@ -12,10 +12,6 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface HotelMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "amenities", ignore = true)
-    Hotel toEntity(HotelInputDto hotelInputDto);
-
     @Mapping(
             target = "address",
             source = "address",
