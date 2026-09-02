@@ -9,6 +9,7 @@ import com.hotelservice.entity.Contacts;
 import com.hotelservice.entity.Hotel;
 import com.hotelservice.exception.AmenitiesNotEmptyException;
 import com.hotelservice.exception.HotelNotFoundException;
+import com.hotelservice.exception.InvalidHistogramParameterException;
 import com.hotelservice.mapper.HotelMapper;
 import com.hotelservice.repository.HotelRepository;
 import com.hotelservice.service.HotelService;
@@ -18,9 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +31,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelMapper hotelMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public HotelOutputDto getById(Long id) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->
@@ -42,6 +42,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<HotelShortOutputDto> getAll() {
         return hotelRepository.findAll()
                 .stream()
@@ -50,6 +51,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<HotelShortOutputDto> searchHotels(
             String name,
             String brand,
@@ -131,6 +133,30 @@ public class HotelServiceImpl implements HotelService {
         hotel.getAmenities().addAll(cleanedAmenities);
 
         return hotelMapper.toHotelOutputDto(hotelRepository.save(hotel));
+    }
+
+    @Override
+    public Map<String, Long> getHistogram(String param) {
+        
+        List<Object[]> result = switch(param.toLowerCase()){
+            case "brand" -> hotelRepository.countHotelsByBrand();
+            case "city" -> hotelRepository.countHotelsByCity();
+            case "country" -> hotelRepository.countHotelsByCountry();
+            case "amenities" -> hotelRepository.countHotelsByAmenities();
+            default -> throw new InvalidHistogramParameterException
+                    ("Invalid histogram parameter: " + param);
+        };
+
+        Map<String, Long> histogram = new HashMap<>();
+
+        for (Object[] row : result) {
+            histogram.put(
+                    (String) row[0],
+                    (Long) row[1]
+            );
+        }
+
+        return histogram;
     }
 
 

@@ -6,6 +6,7 @@ import com.hotelservice.dto.output.HotelShortOutputDto;
 import com.hotelservice.entity.Hotel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface HotelService {
@@ -26,5 +27,6 @@ public interface HotelService {
 
     public HotelOutputDto addAmenities(Long id, Set<String> amenities);
 
+    public Map<String, Long> getHistogram(String param);
 
 }
